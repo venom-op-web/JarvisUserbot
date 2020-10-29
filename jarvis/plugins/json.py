@@ -2,10 +2,11 @@
 Syntax: .json"""
 import io
 
-from jarvis.utils import admin_cmd
+from jarvis.utils import admin_cmd, edit_or_reply, sudo_cmd
 
 
-@jarvis.on(admin_cmd("json"))
+@jarvis.on(admin_cmd("json", outgoing=True))
+@jarvis.on(sudo_cmd("json", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -30,4 +31,4 @@ async def _(event):
             )
             await event.delete()
     else:
-        await event.edit("`{}`".format(the_real_message))
+        await edit_or_reply(event, "`{}`".format(the_real_message))

@@ -4,12 +4,15 @@ import subprocess
 
 import requests
 
+from jarvis.utils import admin_cmd, edit_or_reply, sudo_cmd
 
-@command(pattern="^.labstack ?(.*)")
+
+@jarvis.on(admin_cmd(pattern="labstack ?(.*)", outgoing=True))
+@jarvis.on(sudo_cmd(pattern="labstack ?(.*)", allow_sudo=True))
 async def labstack(event):
     if event.fwd_from:
         return
-    await event.edit("Processing...")
+    await edit_or_reply(event, "Processing...")
     input_str = event.pattern_match.group(1)
     reply = await event.get_reply_message()
     if input_str:
